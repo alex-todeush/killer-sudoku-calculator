@@ -9,6 +9,6 @@ I wrote this for myself because I wasn't happy with most of the options online, 
 
 # TODO
 
- - Add a 1-9 number pad to exclude numbers from possible combinations.
+~~- Add a 1-9 number pad to exclude numbers from possible combinations.~~
  - Add dynamic resizing.
  - Make it less ugly.

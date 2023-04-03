@@ -7,13 +7,14 @@ import tkinter as tk
 import itertools
 
 buttons = []
+results = []
 ARIAL_12 = ("Arial", 12)
 ARIAL_14 = ("Arial", 14)
-
 
 def calculate():
     """Generate buttons for all possible combinations"""
     global buttons
+    global results
     cage_sum = int(sum_entry.get())
     num_cells = int(num_cells_entry.get())
 
@@ -47,13 +48,7 @@ def calculate():
                 button_text = '(' + str(combination[0]) + ')'
             else:
                 button_text = str(combination)
-            button = tk.Button(
-                result_frame,
-                text=button_text,
-                font=ARIAL_12,
-                bg="#abdbe3",
-                command=lambda x=combination, index=i: toggle_button(x, index),
-            )
+            button = tk.Button(result_frame, text=button_text, font=ARIAL_12, bg="#abdbe3", command=lambda x=combination, index=i: toggle_button(x, index),)
             row = i // 3
             col = i % 3
             button.grid(row=row, column=col, padx=5, pady=5)
@@ -62,9 +57,8 @@ def calculate():
 
         error_label.pack()
 
-
 def toggle_button(combination, button_index):
-    """Toggle button appearance when clicked"""
+    """Toggle combination appearance when clicked"""
     button = buttons[button_index]
     if button["relief"] == "raised":
         button.configure(relief="sunken", bg="#6b898e")
@@ -73,6 +67,44 @@ def toggle_button(combination, button_index):
         button.configure(relief="raised", bg="#abdbe3")
         print(f"{combination} unselected")
 
+def check_exclusions():
+    """Check all combinations and see if any of the number in them are excluded,
+        if so, toggle them off.
+    """
+    for i, combination in enumerate(results):
+        found = 0
+        button = buttons[i]
+        for number in combination:
+            if number in number_pad.exclusions:
+                found = 1
+        if found == 0:
+            button.configure(relief="raised", bg="#abdbe3")
+        else:
+            button.configure(relief="sunken", bg="#6b898e")
+
+class NumberPad:
+    """Exclusion number pad"""
+    def __init__(self, master):
+        self.master = master
+        self.numbers = []
+        self.exclusions = []
+        for i in range(9):
+            pad_button = tk.Button(grid_frame, text=str(i+1), width=4, height=2, relief="raised")
+            pad_button.configure(bg="#abdbe3", font=ARIAL_12, command=lambda button=pad_button, num=i+1: self.toggle(button, num))
+            pad_button.grid(row=i//3, column=i%3)
+            self.numbers.append(pad_button)
+
+    def toggle(self, button, num):
+        """Toggle number pad keys and check for changes to possible combinations"""
+        if button['relief'] == 'raised':
+            button.configure(relief='sunken', bg="#6b898e")
+            self.exclusions.append(num)
+            print(f"{num} excluded")
+        else:
+            button.configure(relief='raised', bg="#abdbe3")
+            self.exclusions.remove(num)
+            print(f"{num} included")
+        check_exclusions()
 
 window = tk.Tk()
 window.title("Killer Sudoku Combination Calculator")
@@ -103,7 +135,16 @@ calculate_button.pack(pady=10)
 error_label = tk.Label(window, text="", font=ARIAL_12, bg="white")
 error_label.pack(pady=10)
 
-result_frame = tk.Frame(window, bg="#1e81b0")
-result_frame.pack(pady=10)
+dual_pane_frame = tk.Frame(window, bg="white")
+dual_pane_frame.pack()
+
+grid_frame = tk.Frame(dual_pane_frame)
+grid_frame.pack(side="left")
+number_pad = NumberPad(dual_pane_frame)
+
+result_frame = tk.Frame(dual_pane_frame, bg="#1e81b0")
+result_frame.pack(pady=10, side="left")
+
+dual_pane_frame.grid_rowconfigure(0, minsize=max(grid_frame.winfo_reqheight(), result_frame.winfo_reqheight()))
 
 window.mainloop()
