@@ -5,6 +5,7 @@ of numbers for solving Killer Sudoku puzzles or similar games.
 
 import tkinter as tk
 import itertools
+from PIL import Image,ImageTk
 
 buttons = []
 results = []
@@ -105,7 +106,7 @@ class NumberPad:
             self.exclusions.remove(num)
             print(f"{num} included")
         check_exclusions()
-    
+
     def reset_exclusions(self):
         """Turn off all exclusions"""
         for button in self.numbers:
@@ -150,7 +151,11 @@ grid_frame = tk.Frame(dual_pane_frame)
 grid_frame.pack(side="left")
 number_pad = NumberPad(dual_pane_frame)
 
-reset_button = tk.Button(dual_pane_frame, text="Reset", font=ARIAL_12, command=number_pad.reset_exclusions)
+image = Image.open('assets/reset.jpg')
+image = image.resize((45,45), Image.ANTIALIAS)
+img= ImageTk.PhotoImage(image)
+
+reset_button = tk.Button(dual_pane_frame, text="", image=img, font=ARIAL_12, command=number_pad.reset_exclusions)
 reset_button.pack(pady=10, side="left")
 
 result_frame = tk.Frame(dual_pane_frame, bg="#1e81b0")
