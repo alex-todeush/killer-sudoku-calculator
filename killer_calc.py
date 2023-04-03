@@ -105,6 +105,14 @@ class NumberPad:
             self.exclusions.remove(num)
             print(f"{num} included")
         check_exclusions()
+    
+    def reset_exclusions(self):
+        """Turn off all exclusions"""
+        for button in self.numbers:
+            button.configure(relief='raised', bg="#abdbe3")
+            self.exclusions = []
+            check_exclusions()
+
 
 window = tk.Tk()
 window.title("Killer Sudoku Combination Calculator")
@@ -141,6 +149,9 @@ dual_pane_frame.pack()
 grid_frame = tk.Frame(dual_pane_frame)
 grid_frame.pack(side="left")
 number_pad = NumberPad(dual_pane_frame)
+
+reset_button = tk.Button(dual_pane_frame, text="Reset", font=ARIAL_12, command=number_pad.reset_exclusions)
+reset_button.pack(pady=10, side="left")
 
 result_frame = tk.Frame(dual_pane_frame, bg="#1e81b0")
 result_frame.pack(pady=10, side="left")
