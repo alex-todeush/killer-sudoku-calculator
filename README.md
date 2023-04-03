@@ -5,7 +5,7 @@ Enter the cage sum and number of cells in that cage then all possible combinatio
 
 I wrote this for myself because I wasn't happy with most of the options online, but if it's of any use to you I'm glad.
 
-![preview](https://user-images.githubusercontent.com/83349347/229610500-9cf462ae-1952-4fea-bc9d-7f8400e8d35d.png)
+![preview](https://user-images.githubusercontent.com/83349347/229643755-90eed144-19bc-47a5-97a7-07b21b045ed6.png)
 
 # TODO
 
