@@ -14,20 +14,20 @@ ARIAL_14 = ("Arial", 14)
 def calculate():
     """Generate buttons for all possible combinations"""
     global buttons
-    cage_sum = int(entry1.get())
-    num_cells = int(entry2.get())
+    cage_sum = int(sum_entry.get())
+    num_cells = int(num_cells_entry.get())
 
     if cage_sum < 1 or cage_sum > 45:
-        label4.configure(text="The cage sum must be between 1 and 45.")
+        error_label.configure(text="The cage sum must be between 1 and 45.")
         return
     if num_cells < 1 or num_cells > 9:
-        label4.configure(text="The number of cells must be between 1 and 9.")
+        error_label.configure(text="The number of cells must be between 1 and 9.")
         return
 
     for button in buttons:
         button.destroy()
     buttons = []
-    label4.configure(text="")
+    error_label.configure(text="")
 
     nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     all_combinations = list(itertools.combinations(nums, num_cells))
@@ -39,7 +39,7 @@ def calculate():
             results.append(combination)
     # Display the results as clickable buttons
     if len(results) == 0:
-        label4.configure(text="There are no possible combinations.")
+        error_label.configure(text="There are no possible combinations.")
         result_frame.configure(bg="white")
     else:
         for i, combination in enumerate(results):
@@ -60,7 +60,7 @@ def calculate():
             buttons.append(button)
             result_frame.configure(bg="#1e81b0")
 
-        label4.pack()
+        error_label.pack()
 
 
 def toggle_button(combination, button_index):
@@ -79,36 +79,29 @@ window.title("Killer Sudoku Combination Calculator")
 window.geometry("600x450")
 window.configure(bg="white")
 
-label1 = tk.Label(
-    window,
-    text="Enter the cage sum and the number of cells in the cage:",
-    font=ARIAL_14,
-    bg="white",
-)
-label1.pack(pady=10)
+title_label = tk.Label(window, text="Enter the cage sum and the number of cells in the cage:", font=ARIAL_14, bg="white",)
+title_label.pack(pady=10)
 
 input_frame = tk.Frame(window, bg="#1e81b0")
 input_frame.pack(pady=10)
 
-label2 = tk.Label(input_frame, text="Cage Sum (1-45):", font=ARIAL_12, bg="#abdbe3", justify="center")
-label2.grid(row=0, column=0, padx=5, pady=5)
+sum_input_label = tk.Label(input_frame, text="Cage Sum (1-45):", font=ARIAL_12, bg="#abdbe3", justify="center")
+sum_input_label.grid(row=0, column=0, padx=5, pady=5)
 
-entry1 = tk.Entry(input_frame, font=ARIAL_14, justify="center")
-entry1.grid(row=0, column=1, padx=5, pady=5)
+sum_entry = tk.Entry(input_frame, font=ARIAL_14, justify="center")
+sum_entry.grid(row=0, column=1, padx=5, pady=5)
 
-label3 = tk.Label(input_frame, text="Number of Cells (1-9):", font=ARIAL_12, bg="#abdbe3", justify="center")
-label3.grid(row=1, column=0, padx=5, pady=5)
+num_cell_label = tk.Label(input_frame, text="Number of Cells (1-9):", font=ARIAL_12, bg="#abdbe3", justify="center")
+num_cell_label.grid(row=1, column=0, padx=5, pady=5)
 
-entry2 = tk.Entry(input_frame, font=ARIAL_14, justify="center")
-entry2.grid(row=1, column=1, padx=5, pady=5)
+num_cells_entry = tk.Entry(input_frame, font=ARIAL_14, justify="center")
+num_cells_entry.grid(row=1, column=1, padx=5, pady=5)
 
-button1 = tk.Button(
-    window, text="Calculate Combinations", font=ARIAL_12, command=calculate
-)
-button1.pack(pady=10)
+calculate_button = tk.Button(window, text="Calculate Combinations", font=ARIAL_12, command=calculate)
+calculate_button.pack(pady=10)
 
-label4 = tk.Label(window, text="", font=ARIAL_12, bg="white")
-label4.pack(pady=10)
+error_label = tk.Label(window, text="", font=ARIAL_12, bg="white")
+error_label.pack(pady=10)
 
 result_frame = tk.Frame(window, bg="#1e81b0")
 result_frame.pack(pady=10)
