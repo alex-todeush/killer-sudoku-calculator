@@ -4,6 +4,7 @@ of numbers for solving Killer Sudoku puzzles or similar games.
 """
 
 import tkinter as tk
+import customtkinter as ctk
 import itertools
 from PIL import Image,ImageTk
 
@@ -54,7 +55,6 @@ def calculate():
             col = i % 3
             button.grid(row=row, column=col, padx=5, pady=5)
             buttons.append(button)
-            result_frame.configure(bg="#1e81b0")
 
         error_label.pack()
 
@@ -114,51 +114,52 @@ class NumberPad:
             self.exclusions = []
             check_exclusions()
 
+ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
+ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 
-window = tk.Tk()
+window = ctk.CTk()
 window.title("Killer Sudoku Combination Calculator")
 window.geometry("600x450")
-window.configure(bg="white")
 
-title_label = tk.Label(window, text="Enter the cage sum and the number of cells in the cage:", font=ARIAL_14, bg="white",)
+title_label = ctk.CTkLabel(window, text="Enter the cage sum and the number of cells in the cage:", font=ARIAL_14)
 title_label.pack(pady=10)
 
-input_frame = tk.Frame(window, bg="#1e81b0")
+input_frame = ctk.CTkFrame(window)
 input_frame.pack(pady=10)
 
-sum_input_label = tk.Label(input_frame, text="Cage Sum (1-45):", font=ARIAL_12, bg="#abdbe3", justify="center")
+sum_input_label = ctk.CTkLabel(input_frame, text="Cage Sum (1-45):", font=ARIAL_12, justify="center")
 sum_input_label.grid(row=0, column=0, padx=5, pady=5)
 
-sum_entry = tk.Entry(input_frame, font=ARIAL_14, justify="center")
+sum_entry = ctk.CTkEntry(input_frame, font=ARIAL_14, justify="center")
 sum_entry.grid(row=0, column=1, padx=5, pady=5)
 
-num_cell_label = tk.Label(input_frame, text="Number of Cells (1-9):", font=ARIAL_12, bg="#abdbe3", justify="center")
+num_cell_label = ctk.CTkLabel(input_frame, text="Number of Cells (1-9):", font=ARIAL_12, justify="center")
 num_cell_label.grid(row=1, column=0, padx=5, pady=5)
 
-num_cells_entry = tk.Entry(input_frame, font=ARIAL_14, justify="center")
+num_cells_entry = ctk.CTkEntry(input_frame, font=ARIAL_14, justify="center")
 num_cells_entry.grid(row=1, column=1, padx=5, pady=5)
 
-calculate_button = tk.Button(window, text="Calculate Combinations", font=ARIAL_12, command=calculate)
+calculate_button = ctk.CTkButton(window, text="Calculate Combinations", font=ARIAL_12, command=calculate)
 calculate_button.pack(pady=10)
 
-error_label = tk.Label(window, text="", font=ARIAL_12, bg="white")
+error_label = ctk.CTkLabel(window, text="", font=ARIAL_12)
 error_label.pack(pady=10)
 
-dual_pane_frame = tk.Frame(window, bg="white")
+dual_pane_frame = ctk.CTkFrame(window)
 dual_pane_frame.pack()
 
-grid_frame = tk.Frame(dual_pane_frame)
+grid_frame = ctk.CTkFrame(dual_pane_frame)
 grid_frame.pack(side="left")
 number_pad = NumberPad(dual_pane_frame)
 
 image = Image.open('assets/reset.jpg')
 image = image.resize((45,45), Image.ANTIALIAS)
-img= ImageTk.PhotoImage(image)
+img = ctk.CTkImage(image, size=(45,45))
 
-reset_button = tk.Button(dual_pane_frame, text="", image=img, font=ARIAL_12, command=number_pad.reset_exclusions)
+reset_button = ctk.CTkButton(dual_pane_frame, text="", image=img, font=ARIAL_12, command=number_pad.reset_exclusions, height=50)
 reset_button.pack(pady=10, side="left")
 
-result_frame = tk.Frame(dual_pane_frame, bg="#1e81b0")
+result_frame = ctk.CTkFrame(dual_pane_frame)
 result_frame.pack(pady=10, side="left")
 
 dual_pane_frame.grid_rowconfigure(0, minsize=max(grid_frame.winfo_reqheight(), result_frame.winfo_reqheight()))
