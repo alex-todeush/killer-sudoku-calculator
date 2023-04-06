@@ -24,32 +24,23 @@ class ToggleButton(customtkinter.CTkFrame):
                                                        command=self.toggle)
         self.new_button.grid(row=0, column=0, pady=3)
 
+    def set_command(self, command):
+        self.command = command
 
     def toggle(self):
         if self.command is not None:
             self.command()
-        try:
-            if self.new_button._fg_color == ("#1F6AA5"):   
-                self.new_button._fg_color = "#0f3552"
-            else:
-                self.new_button._fg_color = "#1F6AA5"
-        except ValueError:
-            return
+        if self.pressed == False:   
+            self.set_pressed()
+        else:
+            self.set_unpressed()
     
     def set_pressed(self):
         self.new_button._fg_color = "#0f3552"
+        self.pressed = True
         self.new_button._draw()
 
     def set_unpressed(self):
         self.new_button._fg_color = "#1F6AA5"
+        self.pressed = False
         self.new_button._draw()
-
-    def get(self) -> int:
-        try:
-            return int(self.entry.get())
-        except ValueError:
-            return None
-
-    def set(self, value: float):
-        self.entry.delete(0, "end")
-        self.entry.insert(0, str(int(value)))

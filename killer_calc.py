@@ -82,29 +82,29 @@ class NumberPad:
         self.numbers = []
         self.exclusions = []
         for i in range(9):
-            pad_button = tk.Button(grid_frame, text=str(i+1), width=4, height=2, relief="raised")
-            pad_button.configure(bg="#abdbe3", font=ARIAL_12, command=lambda button=pad_button, num=i+1: self.toggle(button, num))
+            pad_button = ToggleButton(grid_frame, text=str(i+1), width=30, height=20)
+            pad_button.set_command(command=lambda button=pad_button, num=i+1: self.toggle(button, num))
             pad_button.grid(row=i//3, column=i%3)
             self.numbers.append(pad_button)
 
     def toggle(self, button, num):
         """Toggle number pad keys and check for changes to possible combinations"""
-        if button['relief'] == 'raised':
-            button.configure(relief='sunken', bg="#6b898e")
-            self.exclusions.append(num)
-            print(f"{num} excluded")
+        if button.pressed is False:
+            if num not in self.exclusions:
+                self.exclusions.append(num)
         else:
-            button.configure(relief='raised', bg="#abdbe3")
-            self.exclusions.remove(num)
-            print(f"{num} included")
+            if num in self.exclusions:
+                self.exclusions.remove(num)
+        print("Exclusions: " + str(sorted(self.exclusions)))
         check_exclusions()
 
     def reset_exclusions(self):
         """Turn off all exclusions"""
         for button in self.numbers:
-            button.configure(relief='raised', bg="#abdbe3")
-            self.exclusions = []
-            check_exclusions()
+            button.set_unpressed()
+        self.exclusions = []
+        print("Exclusions: " + str(sorted(self.exclusions)))
+        check_exclusions()
 
 ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
 ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
