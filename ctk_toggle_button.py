@@ -1,3 +1,7 @@
+"""
+New widget for CustomTkinter, toggles between a pressed and unpressed state on click
+"""
+
 from typing import Callable
 import customtkinter
 
@@ -18,7 +22,7 @@ class ToggleButton(customtkinter.CTkFrame):
         self.width = width
         self.height = height
 
-        self.configure(fg_color=("gray78", "gray28"))  # set frame color
+        self.configure(fg_color=("gray78", "gray28"))
 
         self.new_button = customtkinter.CTkButton(self, fg_color="#1F6AA5", text=self.text, width=self.width, height=self.height,
                                                        command=self.toggle)
@@ -30,11 +34,11 @@ class ToggleButton(customtkinter.CTkFrame):
     def toggle(self):
         if self.command is not None:
             self.command()
-        if self.pressed == False:   
+        if self.pressed is False:
             self.set_pressed()
         else:
             self.set_unpressed()
-    
+
     def set_pressed(self):
         self.new_button._fg_color = "#0f3552"
         self.pressed = True

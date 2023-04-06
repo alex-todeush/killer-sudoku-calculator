@@ -4,7 +4,6 @@ of numbers for solving Killer Sudoku puzzles or similar games.
 """
 
 import itertools
-import tkinter as tk
 import customtkinter as ctk
 from PIL import Image
 from ctk_spinbox import IntSpinbox
