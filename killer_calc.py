@@ -3,11 +3,12 @@ This program can be used as a tool for generating and selecting combinations
 of numbers for solving Killer Sudoku puzzles or similar games.
 """
 
+import itertools
 import tkinter as tk
 import customtkinter as ctk
-import itertools
 from PIL import Image
-from ctk_spinbox import FloatSpinbox
+from ctk_spinbox import IntSpinbox
+from ctk_toggle_button import ToggleButton
 
 buttons = []
 results = []
@@ -50,7 +51,7 @@ def calculate():
                 button_text = '(' + str(combination[0]) + ')'
             else:
                 button_text = str(combination)
-            button = tk.Button(result_frame, text=button_text, font=ARIAL_12, bg="#abdbe3", command=lambda x=combination, index=i: toggle_button(x, index),)
+            button = ToggleButton(result_frame, text=button_text)
             row = i // 3
             col = i % 3
             button.grid(row=row, column=col, padx=5, pady=5)
@@ -58,15 +59,6 @@ def calculate():
 
         error_label.pack()
 
-def toggle_button(combination, button_index):
-    """Toggle combination appearance when clicked"""
-    button = buttons[button_index]
-    if button["relief"] == "raised":
-        button.configure(relief="sunken", bg="#6b898e")
-        print(f"{combination} selected")
-    else:
-        button.configure(relief="raised", bg="#abdbe3")
-        print(f"{combination} unselected")
 
 def check_exclusions():
     """Check all combinations and see if any of the number in them are excluded,
@@ -79,9 +71,9 @@ def check_exclusions():
             if number in number_pad.exclusions:
                 found = 1
         if found == 0:
-            button.configure(relief="raised", bg="#abdbe3")
+            button.set_unpressed()
         else:
-            button.configure(relief="sunken", bg="#6b898e")
+            button.set_pressed()
 
 class NumberPad:
     """Exclusion number pad"""
@@ -130,13 +122,13 @@ input_frame.pack(pady=10)
 sum_input_label = ctk.CTkLabel(input_frame, text="Cage Sum (1-45):", font=ARIAL_12, justify="center")
 sum_input_label.grid(row=0, column=0, padx=5, pady=5)
 
-sum_entry = FloatSpinbox(input_frame, width = 150, height =50, start=1, end=45, step_size=1)
+sum_entry = IntSpinbox(input_frame, width = 150, height =50, start=1, end=45, step_size=1)
 sum_entry.grid(row=0, column=1, padx=5, pady=5)
 
 num_cell_label = ctk.CTkLabel(input_frame, text="Number of Cells (1-9):", font=ARIAL_12, justify="center")
 num_cell_label.grid(row=1, column=0, padx=5, pady=5)
 
-num_cells_entry = FloatSpinbox(input_frame, width = 150, height =50, start=1, end=9, step_size=1)
+num_cells_entry = IntSpinbox(input_frame, width = 150, height =50, start=1, end=9, step_size=1)
 num_cells_entry.grid(row=1, column=1, padx=5, pady=5)
 
 calculate_button = ctk.CTkButton(window, text="Calculate Combinations", font=ARIAL_12, command=calculate)

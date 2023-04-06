@@ -1,7 +1,7 @@
 from typing import Callable
 import customtkinter
 
-class FloatSpinbox(customtkinter.CTkFrame):
+class IntSpinbox(customtkinter.CTkFrame):
     def __init__(self,
                  *args,
                  start: int,
